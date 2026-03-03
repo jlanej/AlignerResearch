@@ -70,7 +70,7 @@ echo ""
 echo "=============================================="
 echo " Flagstat Comparison"
 echo "=============================================="
-for fs in "${OUT_ROOT}"/*//*.flagstat.txt; do
+for fs in "${OUT_ROOT}"/*/*.flagstat.txt; do
     if [ -f "${fs}" ]; then
         echo ""
         echo "--- $(basename "$(dirname "${fs}")")/$(basename "${fs}") ---"
