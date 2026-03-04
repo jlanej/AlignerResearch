@@ -13,8 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     libbz2-dev \
-    libcurl4-openssl-dev \
-    libhts-dev \
+    libcurl4-gnutls-dev \
     liblzma-dev \
     libncurses5-dev \
     libssl-dev \
@@ -29,6 +28,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     libtool \
     && rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------------------------------------------------
+# htslib (shared library + headers, needed by samtools and LRA)
+# ---------------------------------------------------------------------------
+ARG HTSLIB_VERSION=1.21
+RUN cd /tmp && \
+    wget -q https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2 && \
+    tar xjf htslib-${HTSLIB_VERSION}.tar.bz2 && \
+    cd htslib-${HTSLIB_VERSION} && \
+    ./configure --prefix=/usr/local && make -j"$(nproc)" && make install && \
+    rm -rf /tmp/htslib-*
+RUN ldconfig
 
 # ---------------------------------------------------------------------------
 # samtools
